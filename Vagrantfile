@@ -6,13 +6,13 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure(2) do |config|
-  config.env.enable
+  #config.env.enable
   config.vm.box = "ubuntu/trusty64" unless ENV['VAGRANT_BOX']
   config.vm.network "forwarded_port", guest: 32768, host: 32768
   config.vm.synced_folder "data", "/vagrant_data"
   # Customize the amount of memory on the VM:
-  memory = ENV['GO_VM_MEMORY'] ? ENV['GO_VM_MEMORY'] : 6024
-  cpus = ENV['GO_VM_CPU'] ? ENV['GO_VM_CPU'] : 2
+  memory = ENV['GO_VM_MEMORY'] ? ENV['GO_VM_MEMORY'] : 2048
+  cpus = ENV['GO_VM_CPU'] ? ENV['GO_VM_CPU'] : 1
   name = ENV['GO_VM_NAME'] ? ENV['GO_VM_NAME'] : "go_development"
 
   config.vm.provider "virtualbox" do |vb|
@@ -39,5 +39,6 @@ Vagrant.configure(2) do |config|
   if ENV['INSTALL_HUGO']
       config.vm.provision "shell", path: "install_hugo.sh", args: ENV['HUGO_REPO'] ? ENV['HUGO_REPO'] : "spf13", privileged: false
   end
-  config.vm.provision "shell", path: "source_bashrc.sh", privileged: false
+  config.vm.provision "shell", path: "set_zsh.sh", privileged: false
+  #config.vm.provision "shell", path: "source_bashrc.sh", privileged: false
 end
